@@ -1,0 +1,25 @@
+name: End-to-end tests
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.14.0-chrome99-ff97
+      options: --user 1001 --shm-size=2g
+    strategy:
+      matrix:
+        browser: ['chrome', 'firefox']
+    name: End-to-end tests on ${{ matrix.browser }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run tests
+        uses: cypress-io/github-action@v4
+        with:
+          browser: ${{ matrix.browser }}
+      - name: Save artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: ${{ matrix.browser }}-cypress-screenshots
+          path: cypress/screenshots

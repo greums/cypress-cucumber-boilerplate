@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:critic": "cypress-tags run -e TAGS='@critic and not @ignore'",
+    "report:generate": "mochawesome-merge ./cypress/results/mochawesome/*.json > mochawesome.json && marge mochawesome.json --reportDir ./public && rm mochawesome.json && cp --recursive ./cypress/screenshots ./cypress/videos public/ || true",
+    "report:delete": "rm ./cypress/results/ ./cypress/screenshots/ ./cypress/videos/ ./public --recursive --force || true"
+  },
+  "dependencies": {
+    "cucumber-json-merge": "^0.0.8",
+    "cypress": "^11.0.1",
+    "cypress-cucumber-preprocessor": "^4.3.1",
+    "cypress-multi-reporters": "^1.6.1",
+    "junit-merge": "^2.0.0",
+    "mocha-junit-reporter": "^2.1.1",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.2.1"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": false,
+    "nonGlobalStepBaseDir": false,
+    "cucumberJson": {
+      "generate": true,
+      "outputFolder": "./cypress/results/cucumber-json",
+      "filePrefix": "",
+      "fileSuffix": ".cucumber"
+    }
+  }
+}
